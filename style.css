@@ -1,0 +1,89 @@
+/* 基础设置 */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+/* 书本容器和 3D 视角 */
+.book-container {
+    display: flex;
+    align-items: center;
+    /* 3D 视角是实现翻转的关键 */
+    perspective: 1500px; 
+}
+
+.book {
+    width: 600px; /* PC 宽度 */
+    height: 400px; /* PC 高度 */
+    position: relative;
+    transform-style: preserve-3d; /* 确保子元素在 3D 空间内 */
+}
+
+/* 页面样式 */
+.paper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: left; /* 翻转轴心在左侧 */
+    transition: transform 0.8s ease; /* 翻转动画 */
+    background-color: #ffffff;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 翻转后的样式 */
+.flipped {
+    /* 沿 Y 轴旋转 180 度 */
+    transform: rotateY(-180deg);
+    z-index: 1; /* 确保正在翻转的页在上面 */
+}
+
+/* 页面的正面和背面内容 */
+.front-content, .back-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden; /* 隐藏背面的内容，直到翻转 */
+    padding: inherit;
+    box-sizing: border-box;
+}
+
+.back-content {
+    /* 背面内容需要旋转 180 度才能正向显示 */
+    transform: rotateY(180deg);
+    background-color: #f9f9f9; /* 略微不同的背景色 */
+}
+
+/* 导航按钮样式 */
+.nav-btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* --- 📱 手机适配 (CSS 媒体查询) --- */
+@media screen and (max-width: 768px) {
+    .book {
+        width: 90vw; /* 占据大部分视口宽度 */
+        height: 60vh; /* 占据部分视口高度 */
+    }
+
+    .book-container {
+        flex-direction: column; /* 按钮移到上下 */
+    }
+    
+    .nav-btn {
+        margin: 10px 0;
+        width: 80%;
+    }
+}
